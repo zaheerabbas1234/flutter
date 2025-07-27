@@ -1,0 +1,117 @@
+  Step-by-Step Explanation:
+✅ Step 1: main() function
+
+
+void main() {
+  runApp(const MainApp()); 
+}
+main(): This is the starting point of every Dart/Flutter application.
+
+runApp(): It tells Flutter to draw the given widget (MainApp) on the screen.
+
+MainApp is the root widget of your app.
+
+✅ Step 2: MainApp Class
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+You're creating a custom widget called MainApp.
+
+It extends StatelessWidget, which means this widget doesn’t change after it's built.
+
+The const constructor is used for optimization.
+
+✅ Step 3: build() method
+
+@override
+Widget build(BuildContext context) {
+The build() method returns the UI (User Interface) of this widget.
+
+It must return a widget tree, starting with a top-level widget like MaterialApp.
+
+✅ Step 4: MaterialApp
+
+return MaterialApp(
+  home: Scaffold(
+MaterialApp: A base widget that gives your app material design visuals (buttons, themes, etc.).
+
+home: sets the first screen the app shows.
+
+Scaffold: Provides a basic layout structure (AppBar, Body, etc.).
+
+✅ Step 5: Scaffold → body → Center
+
+  body: Center(
+    child: Column(
+Center: Centers its child in the middle of the screen.
+
+Column: Arranges children (widgets) vertically (top to bottom).
+
+✅ Step 6: Column Properties
+
+mainAxisAlignment: MainAxisAlignment.center,
+mainAxisAlignment.center: Aligns all children in the center vertically.
+
+✅ Step 7: Children Widgets of the Column
+🔹 a) Text Widget
+
+const Text(
+  'Welcome to Flutter!',
+  style: TextStyle(fontSize: 24),
+),
+Displays a text with font size 24.
+
+🔹 b) Spacer (gap)
+
+const SizedBox(height: 16),
+Adds vertical space between widgets.
+
+🔹 c) Image Widget
+
+Image.asset(
+  'assets/images/flutter_logo.png',
+  width: 200,
+  height: 200,
+),
+Shows an image from your assets folder.
+
+width and height limit its size.
+
+✅ Make sure to declare this image in your pubspec.yaml.
+
+🔹 d) Another Spacer
+
+const SizedBox(height: 16),
+Again, adds space between image and button.
+
+🔹 e) Container (acts like a button)
+
+Container(
+  width: 200,
+  height: 50,
+  color: Colors.blue,
+  child: const Center(
+    child: Text(
+      'Start',
+      style: TextStyle(color: Colors.white),
+    ),
+  ),
+),
+Creates a box-shaped button look:
+
+Width: 200, Height: 50
+
+Blue background
+
+Centered white text: Start
+
+🧠 Summary:
+This app shows a welcome screen with:
+
+A greeting
+
+A Flutter logo
+
+A Start button
+
+All are centered on the screen using a Column inside Center.
