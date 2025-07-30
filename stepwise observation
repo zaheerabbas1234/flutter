@@ -1,0 +1,109 @@
+step:1
+=======
+create a new folder using(ctrl+shift+n)
+
+
+open the folder
+
+cmd
+
+code .
+
+open terminal using (ctrl+shift+~)
+
+
+step2:
+=======
+create a project
+
+flutter create my_flutter_app
+
+Create a new Flutter project by running the following command in your terminal:
+
+flutter create my_flutter_app
+The command creates a Flutter project directory called my_flutter_app that contains a simple demo app that uses Material Components.
+
+Change to the Flutter project directory.
+
+step:3
+=======
+cd my_flutter_app
+
+Open the lib/main.dart file in your Flutter project.
+
+Replace the existing code with the following code snippet:
+
+
+step4:
+======
+void main() {
+runApp(const MainApp()); // Run the MainApp widget as the root of the application
+}
+
+class MainApp extends StatelessWidget {
+const MainApp({super.key}); // Constructor for the MainApp widget
+
+@override
+Widget build(BuildContext context) {
+    return MaterialApp( // Create a MaterialApp widget
+    home: Scaffold(
+        body: Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, // Center the column vertically
+            children: [
+            const Text( // Display a text widget with the given text
+                'Welcome to Flutter!',
+                style: TextStyle(fontSize: 24),
+            ),
+            const SizedBox(height: 16),
+            Image.asset( // Display an image from the assets folder
+                'assets/images/flutter_logo.png',
+                width: 200, // Set the width, height of the image
+                height: 200,
+            ),
+            const SizedBox(height: 16),
+            Container( // Create a container widget
+                width: 200,
+                height: 50,
+                color: Colors.blue, // Set the background color of the container
+                child: const Center(
+                child: Text( // Display a text widget
+                    'Start',
+                    style: TextStyle(color: Colors.white), // Set the text color
+                ),
+                ),
+            ),
+            ],
+        ),
+        ),
+    ),
+    );
+}
+}
+
+step:5
+=======
+Get the image flutter_logo.png from wikipedia and save it in the assets/images/ directory of your Flutter project or replace the image path 'assets/images/flutter_logo.png' with the actual path to your image file and then save the file.
+
+
+step:6
+======
+
+Open the pubspec.yaml file in your Flutter project and add the following lines after flutter: to include the image asset in your project:
+
+flutter:
+  uses-material-design: true
+  assets: <-- Add this line
+    - assets/images/flutter_logo.png <-- Add this line
+Save the file.
+
+
+step7:
+=====
+Run your Flutter project using the following command:
+
+flutter run
+Select the appropriate device to run the app.
+
+Enter r to hot reload the app and see the changes you made to the code.
+Enter q to quit the app.
