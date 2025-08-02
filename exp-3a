@@ -1,0 +1,109 @@
+Experiment 3 - Part A: Responsive UI
+====================================
+
+
+Aim
+To design a responsive UI that adapts to different screen sizes.
+
+Objective
+The objective of this experiment is to create a Flutter project that demonstrates the concept of responsive UI design. The UI should adjust its layout and appearance based on the screen size of the device.
+
+System Requirements
+===================
+Flutter SDK: version 2.0.0 or higher
+IDE: Visual Studio Code (Supported) or android studio (Supported) or IntelliJ IDEA (Supported).
+Operating System: Windows (7 or higher), macOS (10.12 or higher), or Linux (Ubuntu, Debian, Fedora, CentOS, or similar)
+Procedure
+Create a new Flutter project by running the following command in your terminal:
+
+flutter create my_flutter_app
+=============================
+This command will create a Flutter project directory called my_flutter_app that contains a simple demo app using Material Components.
+
+Change to the Flutter project directory:
+
+cd my_flutter_app
+=================
+Open the lib/main.dart file in your Flutter project.
+
+Replace the existing code with the following code snippet:
+=========================================================
+
+
+import 'package:flutter/material.dart';
+
+void main() {
+runApp(const MainApp());
+}
+
+class MainApp extends StatelessWidget {
+const MainApp({super.key});
+
+@override
+Widget build(BuildContext context) {
+    return const MaterialApp(
+    title: 'Responsive UI',
+    home: ResponsiveHomePage(),
+    );
+}
+}
+
+class ResponsiveHomePage extends StatelessWidget {
+const ResponsiveHomePage({super.key});
+
+@override
+Widget build(BuildContext context) {
+    return Scaffold(
+    appBar: AppBar(
+        title: const Text('Responsive UI'),
+    ),
+    body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+        if (constraints.maxWidth >= 600) {
+            // For Wide Screen (Tablet/Desktop)
+            return _buildWideContainers();
+        } else {
+            // For Narrow Screen (Phone)
+            return _buildNarrowContainers();
+        }
+        },
+    ),
+    );
+}
+
+Widget _buildWideContainers() {
+    return Container(
+    color: Colors.blue,
+    child: const Center(
+        child: Text(
+        'You are using a Wide screen!',
+        style: TextStyle(
+            fontSize: 26, color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+    ),
+    );
+}
+
+Widget _buildNarrowContainers() {
+    return Container(
+    color: Colors.green,
+    child: const Center(
+        child: Text(
+        'You are using a Narrow screen!',
+        style: TextStyle(fontSize: 16, color: Colors.white),
+        ),
+    ),
+    );
+}
+}
+
+Save the file.
+
+Run your Flutter project using the following command:
+
+flutter run
+==============
+Select the appropriate device to run the app.
+
+To hot reload the app and see the changes you made to the code, enter r. To quit the app, enter
+
