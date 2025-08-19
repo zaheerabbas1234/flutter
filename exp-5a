@@ -1,5 +1,35 @@
 5a) Learn about stateful and stateless widgets.
 ===============================================
+step-1
+=======
+create a new folder using(ctrl+shift+n)
+
+open the folder
+
+cmd
+
+code .
+
+open terminal using (ctrl+shift+~)
+
+step2:
+=======
+create a project
+
+flutter create project5a
+
+Change to the Flutter project directory.
+
+step:3
+=======
+cd project4a
+
+Open the lib/main.dart file in your Flutter project.
+
+Replace the existing code with the following code snippet:
+
+step 4:
+=======
 stateless
 =========
 import 'package:flutter/material.dart';
@@ -63,3 +93,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     );
   }
 }
+
+step-5
+========
+flutter run
