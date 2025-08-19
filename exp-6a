@@ -1,5 +1,38 @@
 exp-6a)Create custom widgets for specific UI elements
-=====================================================.
+======================================================
+
+step-1
+=======
+create a new folder using(ctrl+shift+n)
+
+open the folder
+
+cmd
+
+code .
+
+open terminal using (ctrl+shift+~)
+
+
+step2:
+=======
+create a project
+
+flutter create project6a
+
+Change to the Flutter project directory.
+
+step:3
+=======
+cd project6a
+
+Open the lib/main.dart file in your Flutter project.
+
+Replace the existing code with the following code snippet:
+
+step 4:
+=======
+
 
 import 'package:flutter/foundation.dart'; // Required for kDebugMode
 import 'package:flutter/material.dart';
@@ -65,3 +98,6 @@ class CustomButton extends StatelessWidget {
     ); // ElevatedButton.icon
   }
 }
+
+===============================
+flutter run
