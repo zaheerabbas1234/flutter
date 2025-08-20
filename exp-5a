@@ -39,16 +39,32 @@ void main() => runApp(const MaterialApp(home: MyStatelessWidget()));
 class MyStatelessWidget extends StatelessWidget {
   const MyStatelessWidget({super.key});
 
+  final int _counter = 0; // Static value, not changeable
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Stateless Widget')),
-      body: const Center(
-        child: Text('Hello, I am a stateless widget!'),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text('You have pushed the button this many times:'),
+            Text('$_counter', style: Theme.of(context).textTheme.displayLarge),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // No setState(), so this does nothing in a StatelessWidget
+        },
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
       ),
     );
   }
 }
+
 
 stateful
 ==========
