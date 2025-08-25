@@ -1,0 +1,86 @@
+exp-6b) Apply styling using themes and custom styles
+====================================================
+step-1
+=======
+create a new folder using(ctrl+shift+n)
+
+open the folder
+
+cmd
+
+code .
+
+open terminal using (ctrl+shift+~)
+
+
+step2:
+=======
+create a project
+
+flutter create project6b
+
+Change to the Flutter project directory.
+
+step:3
+=======
+cd project6b
+
+Open the lib/main.dart file in your Flutter project.
+
+Replace the existing code with the following code snippet:
+
+step 4:
+=======
+import 'package:flutter/material.dart';
+
+void main() => runApp(const MainApp());
+
+class MainApp extends StatefulWidget {
+  const MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  bool isDarkTheme = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: isDarkTheme
+          ? ThemeData.dark()
+          : ThemeData.light().copyWith(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.redAccent)),
+      home: Builder(builder: (BuildContext context) {
+        return Scaffold(
+          appBar:
+              AppBar(title: Text(isDarkTheme ? 'Dark Theme' : 'Light Theme')),
+          body: Column(
+            // mainAxisAlignment: MainAxisAlignment.center, <-- Uncomment to center the widgets
+            children: <Widget>[
+              OutlinedButton.icon(
+                  onPressed: () {},
+                  label: const Text('Button'),
+                  icon: isDarkTheme
+                      ? const Icon(Icons.dark_mode_rounded)
+                      : const Icon(Icons.light_mode_rounded)),
+              const SizedBox(height: 20),
+              SwitchListTile(
+                  title: const Text('Dark Theme'),
+                  value: isDarkTheme,
+                  onChanged: (value) {
+                    setState(() {
+                      isDarkTheme = value;
+                    });
+                  }),
+            ]
+          ),
+        );
+      }),
+    );
+  }
+}
+
+===============================
+flutter run
