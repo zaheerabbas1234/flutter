@@ -1,0 +1,159 @@
+exp-7a
+========
+Design a form with various input fields.
+=======================================
+step-1
+=======
+create a new folder using(ctrl+shift+n)
+
+open the folder
+
+cmd
+
+code .
+
+open terminal using (ctrl+shift+~)
+
+
+step2:
+=======
+create a project
+
+flutter create project7a
+
+Change to the Flutter project directory.
+
+step:3
+=======
+cd project7a
+
+Open the lib/main.dart file in your Flutter project.
+
+Replace the existing code with the following code snippet:
+
+step 4:
+=======
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyForm()));
+
+class MyForm extends StatefulWidget {
+  @override
+  _MyFormState createState() => _MyFormState();
+}
+
+class _MyFormState extends State<MyForm> {
+  final _formKey = GlobalKey<FormState>();
+
+  // Form fields
+  String name = '', email = '', password = '', phone = '', gender = 'Male', country = 'USA';
+  DateTime? dob;
+  bool acceptTerms = false;
+
+  final countries = ['USA', 'India', 'UK', 'Canada'];
+
+  void _pickDate() async {
+    dob = await showDatePicker(
+      context: context,
+      initialDate: DateTime(2000),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    setState(() {});
+  }
+
+  void _submit() {
+    if (_formKey.currentState!.validate() && acceptTerms && dob != null) {
+      _formKey.currentState!.save();
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text('Submitted'),
+          content: Text('''
+Name: $name
+Email: $email
+Phone: $phone
+DOB: ${dob!.toLocal().toString().split(' ')[0]}
+Country: $country
+Gender: $gender
+'''),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(dob == null ? 'Select DOB' : 'Accept terms')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Simple Form')),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Name'),
+                onSaved: (v) => name = v!,
+                validator: (v) => v!.isEmpty ? 'Enter name' : null,
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Email'),
+                onSaved: (v) => email = v!,
+                validator: (v) => v!.contains('@') ? null : 'Invalid email',
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Password'),
+                obscureText: true,
+                onSaved: (v) => password = v!,
+                validator: (v) => v!.length >= 6 ? null : 'Min 6 chars',
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Phone'),
+                keyboardType: TextInputType.phone,
+                onSaved: (v) => phone = v!,
+                validator: (v) => v!.length >= 10 ? null : 'Invalid phone',
+              ),
+              ListTile(
+                title: Text(dob == null
+                    ? 'Select Date of Birth'
+                    : 'DOB: ${dob!.toLocal().toString().split(' ')[0]}'),
+                trailing: Icon(Icons.calendar_today),
+                onTap: _pickDate,
+              ),
+              DropdownButtonFormField(
+                value: country,
+                items: countries.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
+                onChanged: (v) => setState(() => country = v!),
+                decoration: InputDecoration(labelText: 'Country'),
+              ),
+              DropdownButtonFormField(
+                value: gender,
+                items: ['Male', 'Female']
+                    .map((g) => DropdownMenuItem(value: g, child: Text(g)))
+                    .toList(),
+                onChanged: (v) => setState(() => gender = v!),
+                decoration: InputDecoration(labelText: 'Gender'),
+              ),
+              CheckboxListTile(
+                title: Text('Accept Terms'),
+                value: acceptTerms,
+                onChanged: (v) => setState(() => acceptTerms = v!),
+              ),
+              ElevatedButton(onPressed: _submit, child: Text('Submit')),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+=========================================================================================================================
+
+flutter run
+
+   
