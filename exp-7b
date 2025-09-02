@@ -1,0 +1,217 @@
+exp-7b
+========
+Implement form validation and error handling.
+============================================
+step-1
+=======
+create a new folder using(ctrl+shift+n)
+
+open the folder
+
+cmd
+
+code .
+
+open terminal using (ctrl+shift+~)
+
+
+step2:
+=======
+create a project
+
+flutter create project7b
+
+Change to the Flutter project directory.
+
+step:3
+=======
+cd project7b
+
+Open the lib/main.dart file in your Flutter project.
+
+Replace the existing code with the following code snippet:
+
+step 4:
+=======================================
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyForm()));
+
+class MyForm extends StatefulWidget {
+  @override
+  _MyFormState createState() => _MyFormState();
+}
+
+class _MyFormState extends State<MyForm> {
+  final _formKey = GlobalKey<FormState>();
+
+  String name = '',
+      email = '',
+      password = '',
+      phone = '',
+      gender = 'Male',
+      country = 'USA';
+  DateTime? dob;
+  bool acceptTerms = false;
+
+  final countries = ['USA', 'India', 'UK', 'Canada'];
+
+  void _pickDate() async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime(2000),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null) setState(() => dob = picked);
+  }
+
+  void _submitForm() {
+    if (!_formKey.currentState!.validate()) return;
+
+    if (dob == null) {
+      _showError('Please select your date of birth');
+      return;
+    }
+
+    if (!acceptTerms) {
+      _showError('You must accept the terms and conditions');
+      return;
+    }
+
+    _formKey.currentState!.save();
+
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text('Form Submitted'),
+        content: Text('''
+Name: $name
+Email: $email
+Phone: $phone
+DOB: ${dob!.toLocal().toString().split(' ')[0]}
+Country: $country
+Gender: $gender
+'''),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Validated Form')),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              // Name
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Name'),
+                onSaved: (v) => name = v!,
+                validator: (v) {
+                  if (v == null || v.isEmpty) return 'Name is required';
+                  if (RegExp(r'[0-9]').hasMatch(v))
+                    return 'Name must not contain numbers';
+                  return null;
+                },
+              ),
+
+              // Email
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Email'),
+                onSaved: (v) => email = v!,
+                validator: (v) {
+                  if (v == null || v.isEmpty) return 'Email is required';
+                  if (!RegExp(r'^[\w\.-]+@[\w\.-]+\.\w+$').hasMatch(v)) {
+                    return 'Invalid email format';
+                  }
+                  return null;
+                },
+              ),
+
+              // Password
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Password'),
+                obscureText: true,
+                onSaved: (v) => password = v!,
+                validator: (v) => v == null || v.length < 6
+                    ? 'Password must be at least 6 characters'
+                    : null,
+              ),
+
+              // Phone
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Phone'),
+                keyboardType: TextInputType.phone,
+                onSaved: (v) => phone = v!,
+                validator: (v) {
+                  if (v == null || v.isEmpty) return 'Phone is required';
+                  if (!RegExp(r'^\d+$').hasMatch(v))
+                    return 'Phone must contain only numbers';
+                  if (v.length < 10) return 'Phone must be at least 10 digits';
+                  return null;
+                },
+              ),
+
+              // DOB
+              ListTile(
+                title: Text(
+                  dob == null
+                      ? 'Select Date of Birth'
+                      : 'DOB: ${dob!.toLocal().toString().split(' ')[0]}',
+                ),
+                trailing: Icon(Icons.calendar_today),
+                onTap: _pickDate,
+              ),
+
+              // Country
+              DropdownButtonFormField<String>(
+                value: country,
+                items: countries
+                    .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                    .toList(),
+                onChanged: (v) => setState(() => country = v!),
+                decoration: InputDecoration(labelText: 'Country'),
+              ),
+
+              // Gender
+              DropdownButtonFormField<String>(
+                value: gender,
+                items: ['Male', 'Female']
+                    .map((g) => DropdownMenuItem(value: g, child: Text(g)))
+                    .toList(),
+                onChanged: (v) => setState(() => gender = v!),
+                decoration: InputDecoration(labelText: 'Gender'),
+              ),
+
+              // Terms
+              CheckboxListTile(
+                title: Text('I accept the terms and conditions'),
+                value: acceptTerms,
+                onChanged: (v) => setState(() => acceptTerms = v!),
+              ),
+
+              // Submit Button
+              ElevatedButton(onPressed: _submitForm, child: Text('Submit')),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
