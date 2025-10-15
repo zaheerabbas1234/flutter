@@ -1,0 +1,121 @@
+exp-9b
+======
+b) Display the fetched data in a meaningful way in the UI
+=========================================================
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+void main() {
+  runApp(GitHubRepoApp());
+}
+
+class GitHubRepoApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'GitHub Repo Fetcher',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: GitHubRepoScreen(),
+    );
+  }
+}
+
+class GitHubRepoScreen extends StatefulWidget {
+  @override
+  _GitHubRepoScreenState createState() => _GitHubRepoScreenState();
+}
+
+class _GitHubRepoScreenState extends State<GitHubRepoScreen> {
+  final TextEditingController _controller = TextEditingController();
+  List<dynamic> _repos = [];
+  bool _isLoading = false;
+  String? _error;
+
+  Future<void> fetchRepos(String username) async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+      _repos = [];
+    });
+
+    final url = Uri.parse('https://api.github.com/users/$username/repos?per_page=100');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        setState(() {
+          _repos = jsonDecode(response.body);
+        });
+      } else {
+        setState(() {
+          _error = 'User not found or API error.';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _error = 'Error fetching data: $e';
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('GitHub Repository Viewer')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _controller,
+              decoration: InputDecoration(
+                labelText: 'Enter GitHub Username',
+                border: OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    if (_controller.text.trim().isNotEmpty) {
+                      fetchRepos(_controller.text.trim());
+                    }
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            if (_isLoading)
+              CircularProgressIndicator()
+            else if (_error != null)
+              Text(
+                _error!,
+                style: TextStyle(color: Colors.red),
+              )
+            else if (_repos.isNotEmpty)
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _repos.length,
+                  itemBuilder: (context, index) {
+                    final repo = _repos[index];
+                    return Card(
+                      elevation: 2,
+                      margin: EdgeInsets.symmetric(vertical: 6),
+                      child: ListTile(
+                        title: Text(repo['name']),
+                        subtitle: Text(repo['description'] ?? 'No description'),
+                        trailing: Icon(Icons.code, color: Colors.blue),
+                      ),
+                    );
+                  },
+                ),
+              )
+            else
+              Text('Enter a username to fetch repositories.'),
+          ],
+        ),
+      ),
+    );
+  }
+}
